@@ -1,17 +1,30 @@
-import React, { useState, useContext, Fragment } from 'react';
-import { Container, Row, Col, Form, Button, Card, CardDeck } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext, Fragment, useEffect } from 'react';
+import { Col, Form, Button, Card } from 'react-bootstrap';
 import AnimailCard from './AnimalCard';
+import { Redirect } from 'react-router-dom';
 
 import AuthContext from '../../context/auth/authContext';
+import AlertContext from '../../context/alert/alertContext';
 
 const animailImg = 'https://img.huffingtonpost.com/asset/5c8ad782230000d50423cebe.jpeg?ops=scalefit_630_noupscale';
 
-const Login = () => {
-
+const Login = (props) => {
 
     const authContext = useContext(AuthContext);
-    const { changesNewAccount } = authContext;
+    const { changesNewAccount, authenticated, message } = authContext;
+
+    const alertContext = useContext(AlertContext);
+    const { showAlert } = alertContext;
+
+    useEffect(() => {
+        if(authenticated) {
+            props.history.push('/inicio');
+        }
+        if(message){
+            showAlert(message.msg, 'alert-error');
+        }
+        // eslint-disable-next-line
+    }, [message, authenticated, props.history]);
 
     const[login, setLogin] = useState({
         email:'',
@@ -31,11 +44,11 @@ const Login = () => {
 
         e.preventDefault();
         if(email.trim() === ''){
-            console.log('ingrese email')
+            showAlert('ingrese email', 'alert-error')
             return;
         }
         if(password.trim() === ''){
-            console.log('ingrese Password');
+            showAlert('ingrese password', 'alert-error');
             return;
         }
         console.log('datos correctos ...!');

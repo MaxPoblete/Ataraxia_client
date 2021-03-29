@@ -13,13 +13,19 @@ export default (state, action) => {
             return{
                 ...state,
                 authenticated: true,
-                mensaje: null,
+                message: null,
             }
         case CHANGES_NEW_ACCOUNT:
             return{
                 ...state,
-                newAccount : state.newAccount === true? false : true
+                newAccount : state.newAccount === true? false : true,
+            }
+        case REGISTRO_ERROR:
+            return{
+                ...state,
+                message: action.payload,
             }
     }
 
 }
+

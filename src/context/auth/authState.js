@@ -10,9 +10,10 @@ import {
 } from '../../types/index'
 
 const AuthState = props => {
+
     const initialState = {
         token: localStorage.getItem('token'),
-        authenticated: '',
+        authenticated: false,
         user: '',
         message: '',
         newAccount: false
@@ -38,17 +39,34 @@ const AuthState = props => {
             })
             
         }catch(error){
-            console.log(error);
+            console.log(error.response.data.msg)
+          const  alert = {
+                msg : error.response.data.msg,
+                category: 'alert-error'
+            }
+            dispatch({
+                type: REGISTRO_ERROR,
+                payload: alert
+            })
         }
     }
 
+    const loginAccount = () => {
+        try{
+
+        }catch(error){
+
+        }
+    }
 
     return(
         <AuthContext.Provider
         value={{
             createUser,
             changesNewAccount,
-            newAccount: state.newAccount
+            newAccount: state.newAccount,
+            authenticated : state.authenticated,
+            message : state.message
         }}>
             {props.children}
         </AuthContext.Provider>

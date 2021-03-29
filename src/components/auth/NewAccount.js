@@ -1,16 +1,32 @@
-import React, { useState, useContext, Fragment } from 'react';
-import { Container, Row, Col, Form, Button, Card, CardDeck } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext, useEffect, Fragment } from 'react';
+import { Col, Form, Button, Card, CardDeck } from 'react-bootstrap';
 import AnimailCard from './AnimalCard';
+import { Redirect } from 'react-router-dom';
 
 import AuthContext from '../../context/auth/authContext';
+import AlertContext from '../../context/alert/alertContext';
 
 const animailImg = 'https://www.institutoorl-iom.com/wp-content/uploads/2016/06/buho-1024x768-1024x520@2x.jpg';
 
 const NewAccount = () => {
 
     const authContext = useContext(AuthContext);
-    const { createUser, changesNewAccount } = authContext;
+    const { createUser, changesNewAccount, authenticated, message } = authContext;
+
+    const alertContext = useContext(AlertContext);
+    const { showAlert } = alertContext;
+
+    const[RedirigirInicio, setRedirigirInicio] = useState(false);
+
+    useEffect(() => {
+        if(authenticated) {
+            setRedirigirInicio(true);
+        }
+        if(message){
+            showAlert(message.msg, 'alert-error');
+        }
+        // eslint-disable-next-line
+    }, [ message, authenticated]);
 
     const[newAccount, setNewAccount] = useState({
         name:'',
@@ -40,21 +56,23 @@ const NewAccount = () => {
         e.preventDefault();
 
         if(name.trim() === ''){
-            console.log('ingrese nombre')
+            showAlert('ingrese nombre','alert-Error')
             return;
         }
         if(email.trim() === ''){
-            console.log('ingrese email')
+            showAlert('ingrese email','alert-error')
             return;
         }
         if(password.trim() === ''){
-            console.log('ingrese Password');
+            showAlert('ingrese Password','alert-error');
             return;
         }
         createUser(newAccount);
         rest();
     }
 
+    if(RedirigirInicio) return <Redirect to='/inicio'/>
+    
     return(
         <Fragment>
             <Col xs={12} md={8} lg={6}>
