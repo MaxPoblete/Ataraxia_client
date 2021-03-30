@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardDeck } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
 const AnimailCard = ({animal}) => { 
     
@@ -22,7 +22,7 @@ const AnimailCard = ({animal}) => {
                 <Card.Footer>
                     <small 
                         className="text-muted">
-                        siguiente anima 
+                        next Animal 
                     </small>
                 </Card.Footer>
 
@@ -31,3 +31,4 @@ const AnimailCard = ({animal}) => {
 }
 
 export default AnimailCard;
+

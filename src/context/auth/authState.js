@@ -2,11 +2,13 @@ import { useReducer } from "react";
 import AuthContext from  './authContext';
 import AuthReducer from './authReducer';
 import clientAxios from '../../config/axios';
+import  tokenAuth  from '../../config/token';
 
 import {
     REGISTRO_EXITOSO,
     REGISTRO_ERROR,
-    CHANGES_NEW_ACCOUNT
+    LOGIN_ERROR,
+    GET_USER
 } from '../../types/index'
 
 const AuthState = props => {
@@ -16,33 +18,26 @@ const AuthState = props => {
         authenticated: false,
         user: '',
         message: '',
-        newAccount: false
     }
 
     const[ state, dispatch ] = useReducer(AuthReducer, initialState);
 
-    const changesNewAccount = () => {
-
-        dispatch({
-            type:CHANGES_NEW_ACCOUNT
-        })
-    }
-
     const createUser = async dataUser => {
         try{
             const response = await clientAxios.post('/api/user', dataUser)
-           
-            console.log(response.data);
             dispatch({
                 type: REGISTRO_EXITOSO,
                 payload: response.data
             })
             
+            //obtener usuario autenticado
+            authenticatedUser();
         }catch(error){
-            console.log(error.response.data.msg)
+            
           const  alert = {
                 msg : error.response.data.msg,
-                category: 'alert-error'
+                category: 'alert-error',
+                
             }
             dispatch({
                 type: REGISTRO_ERROR,
@@ -51,11 +46,23 @@ const AuthState = props => {
         }
     }
 
-    const loginAccount = () => {
+    const authenticatedUser = async () => {
+        const token = localStorage.getItem('token');
+        console.log(token);
+        if(token){
+            tokenAuth(token);
+        }
         try{
-
+            const response = await clientAxios.get('/api/auth')
+            dispatch({
+                type: GET_USER,
+                payload: response.data.usuario
+            })
         }catch(error){
-
+            console.log(error.response);
+            dispatch({
+                type: LOGIN_ERROR
+            })
         }
     }
 
@@ -63,7 +70,6 @@ const AuthState = props => {
         <AuthContext.Provider
         value={{
             createUser,
-            changesNewAccount,
             newAccount: state.newAccount,
             authenticated : state.authenticated,
             message : state.message

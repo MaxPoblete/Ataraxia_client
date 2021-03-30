@@ -11,13 +11,13 @@ export default (state, action) => {
         case SHOW_ALERT:
             return{
                 ...state,
-                alert: action.payload.msg
+                alert: action.payload
             }
 
         case OCULTAR_ALERTA:
             return{
                 ...state,
-                alert : null
+                alert: null
             }
     }
 

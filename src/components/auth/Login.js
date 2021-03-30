@@ -1,7 +1,9 @@
 import React, { useState, useContext, Fragment, useEffect } from 'react';
-import { Col, Form, Button, Card } from 'react-bootstrap';
+import { Col, Form, Button, Card, Alert, Row, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
 import AnimailCard from './AnimalCard';
-import { Redirect } from 'react-router-dom';
+import Header from '../layout/Header';
 
 import AuthContext from '../../context/auth/authContext';
 import AlertContext from '../../context/alert/alertContext';
@@ -14,11 +16,11 @@ const Login = (props) => {
     const { changesNewAccount, authenticated, message } = authContext;
 
     const alertContext = useContext(AlertContext);
-    const { showAlert } = alertContext;
+    const { showAlert, alert } = alertContext;
 
     useEffect(() => {
         if(authenticated) {
-            props.history.push('/inicio');
+             props.history.push('/inicio');
         }
         if(message){
             showAlert(message.msg, 'alert-error');
@@ -56,58 +58,72 @@ const Login = (props) => {
     }
 
     return(
-             <Fragment>
-                <Col xs={12} md={8} lg={6}>
-                    <Card>
-                        <Card.Header>Formulario Login</Card.Header>
-                        <Card.Body>
-                            <Form
-                                onSubmit={submitLogin}
-                            >
-                                <Form.Group controlId="formBasicEmail">
+        <Fragment>
+            <Container fluid>
+                <Header/>
+            </Container>
+            <Container>
+                <Row>
+                    <Col xs={12} md={8} lg={6}>
+                        {alert?
+                            <Alert variant="danger" className=''>
+                                <div className={`alerta ${alert.categoty}`}> {alert.msg} </div>
+                            </Alert>
+                        :
+                            null
+                        }
+                        <Card>
+                            <Card.Header>Formulario Login</Card.Header>
+                            <Card.Body>
+                                <Form
+                                    onSubmit={submitLogin}
+                                >
+                                    <Form.Group controlId="formBasicEmail">
 
-                                    <Form.Label className="text-muted">
-                                        Ingrese Email
-                                    </Form.Label>
+                                        <Form.Label className="text-muted">
+                                            Ingrese Email
+                                        </Form.Label>
 
-                                    <Form.Control 
-                                        type="email"
-                                        name="email"
-                                        value={email}
-                                        onChange={onChange}
-                                    />
-                                </Form.Group>
+                                        <Form.Control 
+                                            type="email"
+                                            name="email"
+                                            value={email}
+                                            onChange={onChange}
+                                        />
+                                    </Form.Group>
 
-                                <Form.Group controlId="formBasicPassword">
-                                    <Form.Label className="text-muted">
-                                        Ingrese password
-                                    </Form.Label>
+                                    <Form.Group controlId="formBasicPassword">
+                                        <Form.Label className="text-muted">
+                                            Ingrese password
+                                        </Form.Label>
 
-                                    <Form.Control 
-                                        type="password"
-                                        name="password"
-                                        value={password}
-                                        onChange={onChange}
-                                    />
-                                </Form.Group>
+                                        <Form.Control 
+                                            type="password"
+                                            name="password"
+                                            value={password}
+                                            onChange={onChange}
+                                        />
+                                    </Form.Group>
 
-                                <Form.Group controlId="formBasicCheckbox">
-                                <a href='#' onClick={()=>changesNewAccount()}>Crear Cuenta</a>
-                                </Form.Group>
+                                    <Form.Group controlId="formBasicCheckbox">
+                                        <Link to='/newaccount'>Crear Cuenta</Link>
+                                    </Form.Group>
 
-                                <Button 
-                                    variant="primary" 
-                                    type="submit">
-                                    Ingresar
-                                </Button>
-                            </Form>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col xs={12} md={4} lg={6} >
-                    <AnimailCard animal={animailImg}/>
-                </Col>
-            </Fragment>
+                                    <Button 
+                                        variant="primary" 
+                                        type="submit">
+                                        Ingresar
+                                    </Button>
+                                </Form>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                    <Col xs={12} md={4} lg={6} >
+                        <AnimailCard animal={animailImg}/>
+                    </Col>
+                </Row>
+            </Container>
+        </Fragment>
     )
 }
 export default Login;

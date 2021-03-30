@@ -1,7 +1,8 @@
 export const REGISTRO_EXITOSO = 'REGISTRO_EXITOSO';
 export const REGISTRO_ERROR = 'REGISTRO_ERROR';
-export const CHANGES_NEW_ACCOUNT = 'CHANGES_NEW_ACCOUNT';
 
 export const SHOW_ALERT = 'SHOW_ALERT';
 export const OCULTAR_ALERTA = 'OCULTAR_ALERTA';
- 
+
+export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const GET_USER = 'GET_USER';

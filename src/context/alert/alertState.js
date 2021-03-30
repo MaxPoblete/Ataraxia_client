@@ -23,14 +23,15 @@ const AlertState = props => {
                 category
             }
         })
+        
+        //later 5 minuter
+        setTimeout(() => {
+            dispatch({
+                type: OCULTAR_ALERTA
+            })
+        }, 5000);
     }
 
-    //later 5 minuter
-    setTimeout(() => {
-        dispatch({
-            type: OCULTAR_ALERTA
-        })
-    }, 20000);
 
     return(
         <alertContext.Provider
