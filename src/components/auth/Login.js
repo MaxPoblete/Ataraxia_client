@@ -13,7 +13,7 @@ const animailImg = 'https://img.huffingtonpost.com/asset/5c8ad782230000d50423ceb
 const Login = (props) => {
 
     const authContext = useContext(AuthContext);
-    const { changesNewAccount, authenticated, message } = authContext;
+    const { loginUser, authenticated, message } = authContext;
 
     const alertContext = useContext(AlertContext);
     const { showAlert, alert } = alertContext;
@@ -53,8 +53,7 @@ const Login = (props) => {
             showAlert('ingrese password', 'alert-error');
             return;
         }
-        console.log('datos correctos ...!');
-      
+        loginUser(login);
     }
 
     return(

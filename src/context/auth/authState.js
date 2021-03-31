@@ -65,10 +65,24 @@ const AuthState = props => {
         }
     }
 
+    const loginUser = async (login) => {
+        try{
+            const response = await clientAxios.post('/api/auth', login);
+            //obtener usuario autenticado
+            authenticatedUser();
+            console.log(response.data);
+        }catch(error){
+
+            console.log(error.response.data.msg);
+
+        }
+    }
+
     return(
         <AuthContext.Provider
         value={{
             createUser,
+            loginUser,
             newAccount: state.newAccount,
             authenticated : state.authenticated,
             message : state.message
