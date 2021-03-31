@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Header from '../layout/Header';
 
 import  passwordValidator from 'password-validator';
+import  emailValidator from 'email-validator';
 
 import AuthContext from '../../context/auth/authContext';
 import AlertContext from '../../context/alert/alertContext';
@@ -64,6 +65,12 @@ const NewAccount = (props) => {
         }
         if(email.trim() === '' ){
             showAlert('Campo Email es Obligatorio','alert-Error')
+            return;
+        }
+        const correctEmail = emailValidator.validate(email);
+        console.log(correctEmail); 
+        if(!correctEmail){
+            showAlert('Formato Email es Incorrecto, Ejemplo email@email.com','alert-Error')
             return;
         }
         if(password.trim() === '' ){
@@ -146,7 +153,7 @@ const NewAccount = (props) => {
 
                                         <Form.Control 
                                             maxLength={20}
-                                            type="email"
+                                            type="text"
                                             name="email"
                                             value={email}
                                             onChange={onChange}
@@ -172,7 +179,7 @@ const NewAccount = (props) => {
                                         </Form.Label>
 
                                         <Form.Control 
-                                            type="checkPassword"
+                                            type="password"
                                             name="checkPassword"
                                             value={checkPassword}
                                             onChange={onChange}
