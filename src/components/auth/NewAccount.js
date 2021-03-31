@@ -46,15 +46,6 @@ const NewAccount = (props) => {
 
     const{ name, email, password, checkPassword } = newAccount;
 
-    const rest = () => {
-        setNewAccount({
-            name:'',
-            email:'',
-            password:'',
-            checkPassword:''
-        })
-    }
-
     const submitNewAccount = e => {
 
         e.preventDefault();
@@ -68,7 +59,7 @@ const NewAccount = (props) => {
             return;
         }
         const correctEmail = emailValidator.validate(email);
-        console.log(correctEmail); 
+
         if(!correctEmail){
             showAlert('Formato Email es Incorrecto, Ejemplo email@email.com','alert-Error')
             return;

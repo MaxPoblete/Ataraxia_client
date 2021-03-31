@@ -8,7 +8,8 @@ import {
     REGISTRO_EXITOSO,
     REGISTRO_ERROR,
     LOGIN_ERROR,
-    GET_USER
+    GET_USER,
+    LOGIN_SUCCESSFUL
 } from '../../types/index'
 
 const AuthState = props => {
@@ -65,16 +66,29 @@ const AuthState = props => {
         }
     }
 
-    const loginUser = async (login) => {
-        try{
-            const response = await clientAxios.post('/api/auth', login);
-            //obtener usuario autenticado
+    const loginUser = async (datos) => {
+
+        try {
+            const respuesta = await clientAxios.post('/api/auth', datos);
+            
+            dispatch({
+                type: LOGIN_SUCCESSFUL,
+                payload: respuesta.data
+            });
+
+            // Obtener el usuario
             authenticatedUser();
-            console.log(response.data);
-        }catch(error){
-
+        } catch (error) {
             console.log(error.response.data.msg);
+            const alert = {
+                msg: error.response.data.msg,
+                category: 'alerta-error'
+            }
 
+            dispatch({
+                type: LOGIN_ERROR,
+                payload: alert
+            })
         }
     }
 
