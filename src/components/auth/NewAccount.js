@@ -99,7 +99,11 @@ const NewAccount = (props) => {
             return;
         }
 
-        createUser(newAccount);
+        createUser({
+            name,
+            email,
+            password
+        });
  
     }
 

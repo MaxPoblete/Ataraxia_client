@@ -9,6 +9,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "dotenv": "^8.2.0",
+    "email-validator": "^2.0.4",
     "node-sass": "^5.0.0",
     "password-validator": "^5.1.1",
     "react": "^17.0.2",
