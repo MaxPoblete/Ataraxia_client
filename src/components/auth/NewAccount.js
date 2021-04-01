@@ -22,7 +22,7 @@ const NewAccount = (props) => {
 
     useEffect(() => {
         if(authenticated) {
-            props.history.push('/inicio');
+            props.history.push('/validateaccount');
         }
         if(message){
             showAlert(message.msg, 'alert-error');
@@ -156,7 +156,7 @@ const NewAccount = (props) => {
                                         </Form.Label>
 
                                         <Form.Control 
-                                            maxLength={20}
+                                            maxLength={255}
                                             type="text"
                                             name="email"
                                             value={email}
@@ -170,6 +170,7 @@ const NewAccount = (props) => {
                                         </Form.Label>
 
                                         <Form.Control 
+                                            maxLength={255}
                                             type="password"
                                             name="password"
                                             value={password}

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './components/auth/Login';
 import Inicio from './components/layout/Inicio';
 import NewAccount from './components/auth/NewAccount';
+import validateAccount from './components/auth/ValidateAccount';
 
 //import constext states
 import AuthState from './context/auth/authState';
@@ -17,6 +18,7 @@ const  App = () => {
               <Route exact path="/" component={Login} />
               <Route exact path="/newaccount" component={NewAccount} />
               <Route exact path="/inicio" component={Inicio} />
+              <Route exact path="/validateaccount" component={validateAccount} />
           </Switch>
         </Router>
       </AlertState>
