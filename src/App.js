@@ -4,10 +4,17 @@ import Login from './components/auth/Login';
 import Inicio from './components/layout/Inicio';
 import NewAccount from './components/auth/NewAccount';
 import validateAccount from './components/auth/ValidateAccount';
-
 //import constext states
 import AuthState from './context/auth/authState';
 import AlertState from './context/alert/alertState';
+
+import tokenAuth from './config/token';
+
+const token = localStorage.getItem('token');
+
+if(token){
+  tokenAuth(token);
+}
 
 const  App = () => {
   return (

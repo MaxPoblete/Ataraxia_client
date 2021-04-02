@@ -5,31 +5,66 @@ import { Link } from 'react-router-dom';
 import AnimailCard from './AnimalCard';
 import Header from '../layout/Header';
 
+import AlertContext from '../../context/alert/alertContext';
+import AuthContext from '../../context/auth/authContext';
+import { propTypes } from 'react-bootstrap/esm/Image';
+
 const animailImg = 'https://www.eltiempo.com/uploads/2019/03/09/5c83e8f21ed51.jpeg';
 
-const ValidateAccount = () => {
+const ValidateAccount = (props) => {
 
-    const[code, setCode] = useState({
-        validationCode: ''
+    const alertContext = useContext(AlertContext);
+    const { showAlert, alert } = alertContext;
+
+    const authContext = useContext(AuthContext);
+    const { checkValidateCode, message, validateCode } = authContext;
+
+    const existToken  = localStorage.getItem('token');
+
+    console.log(existToken);
+
+    useEffect(()=> {
+        if(!existToken){
+            props.history.push('/newaccount');
+        }
+        if(message){
+            showAlert(message.msg, message.categoty)
+        }
+        if(validateCode){
+            props.history.push('/inicio');
+        }
+    },[validateCode, message, existToken, props.history])
+
+    const[validationCode, setCode] = useState({
+        code: ''
     });
 
     const onChange = e => {
         setCode({
-            ...code,
+            ...validationCode,
             [e.target.name] : e.target.value
         })
     }
 
-    const { validationCode } = code;
+    const { code } = validationCode;
 
     const submitValidacion = e => {
 
         e.preventDefault();
 
-        if(validationCode.trim() ===''){
-            console.log(`Ingrese codigo valido`);
+        if(code.trim() ===''){
+            showAlert('Ingrese Codigo de validacion', 'alert-error')
             return;
         }
+        if(code.length !==5 ){
+            showAlert('Codigo debe Contener 5 Numeros enteros', 'alert-error')
+            return;
+        }
+        if(isNaN(code) === true){
+            showAlert('Ingrese Solo Valores Numericos', 'alert-error')
+            return;
+        }
+        checkValidateCode(validationCode);
     }
 
     return(
@@ -40,8 +75,15 @@ const ValidateAccount = () => {
         <Container>
             <Row>
                 <Col>
+                {alert?
+                    <Alert variant="danger" className=''>
+                        <div className={`alerta ${alert.categoty}`}> {alert.msg} </div>
+                    </Alert>
+                :
+                     null
+                }
                 <Card>
-                        <Card.Header>Verifique su cuenta ingresando codigo de verificacion enviado a sus correo</Card.Header>
+                        <Card.Header>Verifique su cuenta ingresando codigo de verificacion enviado a su correo</Card.Header>
                             <Card.Body>
                                 <Form
                                     onSubmit={submitValidacion}
@@ -52,16 +94,13 @@ const ValidateAccount = () => {
                                             Ingrese Codigo Validacion
                                         </Form.Label>
 
-                                        <Form.Control 
+                                        <Form.Control
+                                            maxLength={5} 
                                             type="text"
-                                            name="validationCode"
-                                            value={validationCode}
+                                            name="code"
+                                            value={code}
                                             onChange={onChange}
                                         />
-                                    </Form.Group>
-
-                                    <Form.Group controlId="formBasicCheckbox">
-                                        <Link to='/newaccount'>Crear Cuenta</Link>
                                     </Form.Group>
 
                                     <Button 

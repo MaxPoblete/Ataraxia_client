@@ -3,7 +3,9 @@ import {
     REGISTRO_ERROR,
     LOGIN_ERROR,
     GET_USER,
-    LOGIN_SUCCESSFUL
+    LOGIN_SUCCESSFUL,
+    CODE_SUSCCESSFUL,
+    CODE_ERROR
 } from '../../types/index'
 
 export default (state, action) => {
@@ -12,7 +14,7 @@ export default (state, action) => {
 
         case REGISTRO_EXITOSO:
         case LOGIN_SUCCESSFUL:
-            localStorage.setItem('token', action.payload.token)
+            localStorage.setItem('token', action.payload.token);
             return{
                 ...state,
                 authenticated: true,
@@ -30,6 +32,16 @@ export default (state, action) => {
             return{
                 ...state,
                 user : action.payload
+            }  
+        case CODE_SUSCCESSFUL:
+            return{
+                ...state,
+                validateCode : true
+            }
+        case CODE_ERROR:
+            return{
+                ...state,
+                message : action.payload
             }
     }
 }

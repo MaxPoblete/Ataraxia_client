@@ -9,7 +9,9 @@ import {
     REGISTRO_ERROR,
     LOGIN_ERROR,
     GET_USER,
-    LOGIN_SUCCESSFUL
+    LOGIN_SUCCESSFUL,
+    CODE_ERROR,
+    CODE_SUSCCESSFUL
 } from '../../types/index'
 
 const AuthState = props => {
@@ -17,8 +19,9 @@ const AuthState = props => {
     const initialState = {
         token: localStorage.getItem('token'),
         authenticated: false,
-        user: '',
+        user: localStorage.getItem('user'),
         message: '',
+        validateCode: false
     }
 
     const[ state, dispatch ] = useReducer(AuthReducer, initialState);
@@ -37,8 +40,7 @@ const AuthState = props => {
           const  alert = {
                 msg : error.response.data.msg,
                 category: 'alert-error',
-                
-            }
+        }
             dispatch({
                 type: REGISTRO_ERROR,
                 payload: alert
@@ -48,7 +50,6 @@ const AuthState = props => {
 
     const authenticatedUser = async () => {
         const token = localStorage.getItem('token');
-        console.log(token);
         if(token){
             tokenAuth(token);
         }
@@ -67,7 +68,6 @@ const AuthState = props => {
     }
 
     const loginUser = async (datos) => {
-
         try {
             const respuesta = await clientAxios.post('/api/auth', datos);
             
@@ -92,14 +92,40 @@ const AuthState = props => {
         }
     }
 
+    const checkValidateCode = async code => {
+
+        try{
+            console.log(code);
+            const response = await clientAxios.post('/api/user/check', code)
+            console.log(response.data.msg);
+            dispatch({
+                type: CODE_SUSCCESSFUL
+            })
+        }catch(error){
+            console.log(error.response.data.msg);
+            const alert = {
+                msg : error.response.data.msg,
+                category : 'alerta-error'
+            }
+            dispatch({
+                type: CODE_ERROR,
+                payload : alert
+            })
+        }
+    }
+
     return(
         <AuthContext.Provider
         value={{
             createUser,
             loginUser,
+            checkValidateCode,
+            authenticatedUser,
             newAccount: state.newAccount,
             authenticated : state.authenticated,
-            message : state.message
+            message : state.message,
+            user: state.user,
+            validateCode : state.validateCode
         }}>
             {props.children}
         </AuthContext.Provider>
